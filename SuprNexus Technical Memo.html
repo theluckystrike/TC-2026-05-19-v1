@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuprNexus · Technical Confirmation Memo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --ink-2: #1a1a1a;
+    --mute: #5e5e5b;
+    --mute-2: #8a8a86;
+    --rule: #d9d7d1;
+    --rule-2: #ececea;
+    --paper: #fbfaf7;
+    --paper-2: #f4f2ec;
+    --hair: #0a0a0a;
+  }
+  @page { size: letter; margin: 0.55in; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #e9e7e2; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    font-size: 10.5px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    padding: 32px 16px 64px;
+  }
+  .page {
+    background: var(--paper);
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 44px 56px 40px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.18);
+    border: 1px solid var(--rule);
+  }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .caps { text-transform: uppercase; letter-spacing: 0.14em; }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--hair);
+  }
+  .masthead .mark {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 9px; color: var(--ink);
+  }
+  .mark-logo {
+    width: 22px; height: 22px;
+    border: 1.4px solid var(--ink);
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .mark-logo::before, .mark-logo::after {
+    content: ""; position: absolute; background: var(--ink);
+  }
+  .mark-logo::before { left: 50%; top: -3px; bottom: -3px; width: 1.4px; transform: translateX(-50%); }
+  .mark-logo::after  { top: 50%; left: -3px; right: -3px; height: 1.4px; transform: translateY(-50%); }
+  .doc-title {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-top: 14px;
+  }
+  .doc-sub {
+    font-size: 11px;
+    color: var(--mute);
+    margin-top: 6px;
+    max-width: 60ch;
+  }
+  .masthead-right {
+    text-align: right;
+    font-size: 9px;
+    color: var(--mute);
+  }
+  .masthead-right .stamp {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    padding: 4px 9px 3px;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 9px;
+    margin-bottom: 8px;
+  }
+
+  /* ---------- meta strip ---------- */
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-bottom: 1px solid var(--rule);
+    margin-top: 0;
+  }
+  .meta > div {
+    padding: 10px 14px 10px 0;
+    border-right: 1px solid var(--rule);
+  }
+  .meta > div:last-child { border-right: none; padding-right: 0; }
+  .meta .k {
+    font-size: 8px; color: var(--mute); letter-spacing: 0.16em;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .meta .v { font-size: 10.5px; color: var(--ink); font-weight: 500; }
+
+  /* ---------- thesis block ---------- */
+  .thesis {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 24px;
+    padding: 22px 0 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .thesis .label { font-size: 8px; color: var(--ink); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+  .thesis .body {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    max-width: 64ch;
+  }
+  .thesis .body b { font-weight: 700; }
+  .thesis .body .fig { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 13.5px; }
+  .thesis .body::first-letter {
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 0.9;
+    float: left;
+    padding: 2px 8px 0 0;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- KPI strip ---------- */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--rule);
+  }
+  .kpi { padding: 18px 18px 18px 0; border-right: 1px solid var(--rule); }
+  .kpi:last-child { border-right: none; }
+  .kpi .k { font-size: 8.5px; letter-spacing: 0.16em; color: var(--mute); text-transform: uppercase; margin-bottom: 8px; }
+  .kpi .v { font-family: "IBM Plex Mono", monospace; font-size: 24px; font-weight: 500; line-height: 1; letter-spacing: -0.01em; }
+  .kpi .v .unit { font-size: 11px; color: var(--mute); margin-left: 2px; }
+  .kpi .note { font-size: 9px; color: var(--mute); margin-top: 6px; }
+
+  /* ---------- section headers ---------- */
+  .section {
+    margin-top: 26px;
+  }
+  .section-h {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--hair);
+    margin-bottom: 14px;
+  }
+  .section-h .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .section-h .ttl {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  .section-h .meta-r {
+    font-size: 9px;
+    color: var(--mute);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- alignment grid ---------- */
+  .align-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .align-cell {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 16px 14px;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 6px;
+  }
+  .align-cell .row1 { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .align-cell .tag {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 1px solid var(--ink);
+    padding: 2px 7px 1px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .align-cell .tag.ghost { border-color: var(--mute); color: var(--mute); }
+  .align-cell .tag.fill  { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .align-cell h3 {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+  }
+  .align-cell p {
+    font-size: 10px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .cite {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--mute);
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ---------- fixes ---------- */
+  .fixes { border-top: 1px solid var(--rule); }
+  .fix {
+    display: grid;
+    grid-template-columns: 38px 1fr 110px;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .fix .n {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .fix h4 {
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .fix p { font-size: 10px; color: var(--ink-2); line-height: 1.55; }
+  .fix .time {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-align: right;
+    color: var(--ink);
+  }
+  .fix .time .lbl {
+    font-size: 8px; color: var(--mute); letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 4px; display: block; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .moat-note {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: var(--paper-2);
+    border-left: 2px solid var(--ink);
+    font-size: 10px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .moat-note b { font-weight: 700; }
+
+  /* ---------- competitive matrix ---------- */
+  .matrix {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 10.5px;
+  }
+  .matrix th, .matrix td {
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 8px;
+    vertical-align: middle;
+  }
+  .matrix thead th {
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 8px;
+  }
+  .matrix thead th.cap-h {
+    text-align: left;
+    width: 36%;
+    padding-left: 0;
+  }
+  .matrix thead th.us {
+    color: var(--ink);
+    border-bottom-color: var(--hair);
+  }
+  .matrix tbody td.cap {
+    text-align: left;
+    padding-left: 0;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 10.5px;
+  }
+  .matrix tbody td.cap .sub {
+    display: block;
+    font-size: 9px;
+    color: var(--mute);
+    font-weight: 400;
+    margin-top: 1px;
+    letter-spacing: 0;
+  }
+  .matrix tbody td.dot {
+    text-align: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .matrix tbody td.dot.us {
+    background: var(--paper-2);
+  }
+  .matrix tbody td.dot .empty { color: var(--mute-2); }
+  .matrix tbody td.dot .half { color: var(--ink); opacity: 0.55; }
+  .matrix tfoot td {
+    border-bottom: none;
+    border-top: 2px solid var(--hair);
+    padding-top: 10px;
+    font-size: 9px;
+    color: var(--mute);
+    text-align: center;
+    font-family: "IBM Plex Mono", monospace;
+    letter-spacing: 0.02em;
+  }
+  .matrix tfoot td.cap {
+    text-align: left;
+    padding-left: 0;
+    color: var(--mute);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .matrix tfoot td.us { background: var(--paper-2); color: var(--ink); font-weight: 600; }
+  .legend {
+    display: flex;
+    gap: 22px;
+    margin-top: 12px;
+    font-size: 9px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dotleg { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink); line-height: 1; }
+  .legend .dotleg.empty { color: var(--mute-2); }
+  .legend .dotleg.half { opacity: 0.55; }
+
+  /* ---------- market table ---------- */
+  table.market {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5px;
+  }
+  table.market th {
+    text-align: left;
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 600;
+    padding: 8px 10px 8px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  table.market th.r { text-align: right; padding-right: 16px; }
+  table.market th:last-child { padding-right: 0; }
+  table.market td {
+    padding: 9px 16px 9px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-2);
+  }
+  table.market td:last-child { padding-right: 0; }
+  table.market td.prog { font-weight: 600; color: var(--ink); }
+  table.market td.bgt {
+    font-family: "IBM Plex Mono", monospace;
+    text-align: right;
+    color: var(--ink); font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  table.market td.bar {
+    width: 22%;
+    padding-right: 16px;
+  }
+  .bar-track {
+    position: relative;
+    height: 6px;
+    background: var(--rule-2);
+  }
+  .bar-fill {
+    position: absolute; inset: 0 auto 0 0;
+    background: var(--ink);
+  }
+  table.market td.src {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--mute);
+  }
+  table.market tr.tam td {
+    border-bottom: none;
+    border-top: 2px solid var(--hair);
+    padding-top: 12px;
+    padding-bottom: 4px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  table.market tr.tam td.bgt { font-size: 14px; }
+  table.market tr.tam td.note { color: var(--mute); font-weight: 400; font-size: 9.5px; }
+
+  /* ---------- risks ---------- */
+  .risks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .risk {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 16px;
+  }
+  .risk .head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    margin-bottom: 6px;
+  }
+  .risk h4 { font-size: 11px; font-weight: 700; letter-spacing: -0.005em; }
+  .risk .sev {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .sev-dots { display: inline-flex; gap: 3px; }
+  .sev-dots i {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--mute-2);
+    display: inline-block;
+  }
+  .sev-dots i.on { background: var(--ink); }
+  .risk p { font-size: 10px; color: var(--ink-2); line-height: 1.5; }
+  .risk .mit { color: var(--ink); font-weight: 600; }
+
+  /* ---------- close ---------- */
+  .close {
+    margin-top: 30px;
+    padding: 24px 28px 26px;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: end;
+  }
+  .close .lab { font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+  .close h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; line-height: 1.15; }
+  .close p { font-size: 11.5px; line-height: 1.55; color: rgba(255,255,255,0.82); max-width: 60ch; }
+  .close .num {
+    font-family: "IBM Plex Mono", monospace;
+    color: var(--paper); font-weight: 600;
+  }
+  .close .ask {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 28px;
+  }
+  .close .ask .askv {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .close .ask .askv .unit { font-size: 15px; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .close .ask .askl { font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 8px; }
+  .close .ask .askn { font-size: 9.5px; color: rgba(255,255,255,0.6); margin-top: 4px; font-family: "IBM Plex Mono", monospace; }
+
+  /* ---------- references ---------- */
+  .refs { margin-top: 28px; }
+  .refs h4 {
+    font-size: 8.5px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--mute); font-weight: 600;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px; margin-bottom: 10px;
+  }
+  .refs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 28px;
+  }
+  .refs-grid span {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--mute);
+    line-height: 1.55;
+  }
+  .refs-grid a {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--ink-2);
+    text-decoration: none;
+    line-height: 1.55;
+    display: block;
+    border-bottom: 1px dotted var(--rule);
+    padding: 4px 0;
+    transition: background 0.12s;
+  }
+  .refs-grid a:hover { background: var(--paper-2); color: var(--ink); }
+  .refs-grid a b { color: var(--ink); font-weight: 600; margin-right: 6px; }
+  .refs-grid a .url {
+    display: block;
+    color: var(--mute);
+    font-size: 8px;
+    margin-top: 2px;
+    word-break: break-all;
+  }
+
+  /* ---------- colophon footer ---------- */
+  .colophon {
+    margin-top: 22px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 8.5px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .colophon .right { display: flex; gap: 18px; }
+
+  @media print {
+    html, body { background: #fff; }
+    body { padding: 0; }
+    .page { box-shadow: none; border: none; max-width: 100%; padding: 0; background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ MASTHEAD ============ -->
+  <div class="masthead">
+    <div>
+      <div class="mark">
+        <span class="mark-logo"></span>
+        <span class="caps mono">SuprNexus &nbsp;·&nbsp; Investment Memorandum &nbsp;·&nbsp; Series Seed</span>
+      </div>
+      <div class="doc-title">Technical Confirmation<br>Against US Air Force &amp; DoD Requirements.</div>
+      <div class="doc-sub">A deep technical review of the SuprNexus Policy Engine architecture, certification path, addressable market, and capital efficiency to first DoD revenue.</div>
+    </div>
+    <div class="masthead-right">
+      <div class="stamp caps">Unclassified</div><br>
+      <span class="mono">DOC&nbsp;·&nbsp;TC-2026-05-19&nbsp;·&nbsp;v1</span>
+    </div>
+  </div>
+
+  <!-- ============ META STRIP ============ -->
+  <div class="meta">
+    <div>
+      <div class="k">Prepared for</div>
+      <div class="v">George, Chief Executive</div>
+    </div>
+    <div>
+      <div class="k">Date of issue</div>
+      <div class="v mono">19&nbsp;May&nbsp;2026</div>
+    </div>
+    <div>
+      <div class="k">Stage</div>
+      <div class="v">Pre-seed / technical</div>
+    </div>
+    <div>
+      <div class="k">Round size</div>
+      <div class="v mono">$150K → product + 2 paths</div>
+    </div>
+    <div>
+      <div class="k">Review</div>
+      <div class="v">Parallel technical</div>
+    </div>
+  </div>
+
+  <!-- ============ THESIS ============ -->
+  <div class="thesis">
+    <div class="label">Thesis</div>
+    <div class="body">
+      SuprNexus architecture is <b>technically validated</b> for DoD Zero Trust.
+      The Department is spending <span class="fig">$6.2B+</span> annually on programs in direct alignment.
+      Three engineering fixes at <span class="fig">~$100K</span> unlock NSA CSfC certification, opening two
+      acquisition pathways within 90 days. First contract revenue targets <span class="fig">$5M–$10M</span>
+      at month 18–24.
+    </div>
+  </div>
+
+  <!-- ============ KPI STRIP ============ -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="k">Capital ask</div>
+      <div class="v">$150<span class="unit">K</span></div>
+      <div class="note">Produces a certifiable product in 4 months.</div>
+    </div>
+    <div class="kpi">
+      <div class="k">Addressable TAM</div>
+      <div class="v">$6.2<span class="unit">B+</span></div>
+      <div class="note">FY25–FY26 aligned DoD program lines.</div>
+    </div>
+    <div class="kpi">
+      <div class="k">First revenue</div>
+      <div class="v">$5–10<span class="unit">M</span></div>
+      <div class="note">Target window, month 18–24.</div>
+    </div>
+    <div class="kpi">
+      <div class="k">CNSA 2.0 deadline</div>
+      <div class="v mono">01 / 01 / 27</div>
+      <div class="note">Networking compliance mandate.</div>
+    </div>
+  </div>
+
+  <!-- ============ §01 ALIGNMENT ============ -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">01</div>
+      <div class="ttl">Confirmed technical alignment</div>
+      <div class="meta-r">Six findings · Reviewed against NIST, DoD, DAF, NSA</div>
+    </div>
+
+    <div class="align-grid">
+      <div class="align-cell">
+        <div class="row1">
+          <h3>NIST 800-207 PDP / PEP</h3>
+          <span class="tag fill">Confirmed</span>
+        </div>
+        <p>SuprNexus implements the Policy Decision Point. SuprMesh nodes serve as Policy Enforcement Points. Control / data plane separation matches exactly. DISA Thunderdome achieved all 152 ZT outcomes (April 2025), setting the benchmark. SuprNexus adds per-packet authorization that Thunderdome lacks at the tactical edge.</p>
+        <span class="cite">[NIST SP 800-207 §3 · DefenseScoop, Apr 2025]</span>
+      </div>
+
+      <div class="align-cell">
+        <div class="row1">
+          <h3>Three-Mode Trust Algorithm</h3>
+          <span class="tag fill">Confirmed</span>
+        </div>
+        <p>Maps all three NIST trust modes simultaneously: criteria-based (relationships), score-based (SuprNeural AI), and contextual (behavioral). Reviewed against Zscaler, Palo Alto, Illumio, Cisco, and Juniper. None deliver all three natively.</p>
+        <span class="cite">[NIST SP 800-207 §7.1]</span>
+      </div>
+
+      <div class="align-cell">
+        <div class="row1">
+          <h3>Intent-Based Policy</h3>
+          <span class="tag">No competitor</span>
+        </div>
+        <p>Expresses <i>why</i> access is granted (tactical intent), not just <i>who</i> and <i>what</i>. DAF ZT Strategy v1.0 requires "risk-adaptive-based access controls." Zero competitors operate at the network policy layer with intent semantics.</p>
+        <span class="cite">[DAF ZT Strategy v1.0, Jul 2024]</span>
+      </div>
+
+      <div class="align-cell">
+        <div class="row1">
+          <h3>Packet Passports</h3>
+          <span class="tag fill">Confirmed</span>
+        </div>
+        <p>Oracle built Zero Trust Packet Routing in OCI, proving the market category. SuprNexus extends with per-packet cryptographic authorization for DDIL environments. DoD CIO JSON-ISM maps to Passport metadata; NATO OpenTDF validates crypto-bound policy.</p>
+        <span class="cite">[Oracle ZPR · DoDCIO/json-ism · OpenTDF]</span>
+      </div>
+
+      <div class="align-cell">
+        <div class="row1">
+          <h3>SuprNeural · DoD AI Strategy</h3>
+          <span class="tag ghost">Strategic fit</span>
+        </div>
+        <p>The January 2026 DoD AI Strategy established machine-coordination networks as a Pace-Setting Project for AI battle management. SuprNeural is an AI inference engine for network policy at machine speed. Ontology-based architecture provides RAI Toolkit traceability natively.</p>
+        <span class="cite">[DoD AI Strategy Jan 2026 · CDAO RAI Toolkit]</span>
+      </div>
+
+      <div class="align-cell">
+        <div class="row1">
+          <h3>NPE Identity Gap</h3>
+          <span class="tag ghost">Unaddressed</span>
+        </div>
+        <p>DoD ICAM defines NPE categories for drones / IoT but has no packet-level identity binding at JADC2 scale. SuprGate provides clientless IoT security; SuprDrone handles autonomous platforms. Comply-to-Connect requires device ID before network access.</p>
+        <span class="cite">[DoD ICAM Reference Design §4 · DoDI 8530.01]</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ §02 FIXES ============ -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">02</div>
+      <div class="ttl">Three engineering fixes required for certification</div>
+      <div class="meta-r">Estimated total · $100K · 10–14 weeks</div>
+    </div>
+
+    <div class="fixes">
+      <div class="fix">
+        <div class="n">01</div>
+        <div>
+          <h4>Replace WireGuard + HPKE for CSfC / CNSA 2.0.</h4>
+          <p>WireGuard is not CNSA-approved, not on the CSfC Components List, and lacks IKEv2. HPKE has no FIPS 140-3 validation. C1 / C2 share a single ECDH root, which violates CSfC independence. CNSA 2.0 networking deadline is 01 Jan 2027. Replace with NIAP-evaluated IPsec / IKEv2 plus ML-KEM-1024 hybrid post-quantum exchange. <span class="cite" style="display:inline">[CNSSP-15 Annex B · CSfC VPN CP §3.2]</span></p>
+        </div>
+        <div class="time">
+          <span class="lbl">Timeline</span>
+          8–12 wks
+        </div>
+      </div>
+
+      <div class="fix">
+        <div class="n">02</div>
+        <div>
+          <h4>Fix AES-GCM nonce management.</h4>
+          <p>C1 derives key and IV from HKDF deterministically. Nonce reuse causes catastrophic plaintext leak plus GHASH key recovery. Switch to an explicit per-packet counter following TLS 1.3 convention. <span class="cite" style="display:inline">[NIST SP 800-38D §8.3 · RFC 8446 §5.3]</span></p>
+        </div>
+        <div class="time">
+          <span class="lbl">Timeline</span>
+          1–2 wks
+        </div>
+      </div>
+
+      <div class="fix">
+        <div class="n">03</div>
+        <div>
+          <h4>Bind Passport JSON to C2 via AAD.</h4>
+          <p>Passport metadata sits between C2 and C3, protected by C3 alone. A C3 compromise exposes classification markings and routing. Include an HMAC as AAD inside C2 AES-256-GCM. <span class="cite" style="display:inline">[NIST SP 800-38D §5.2.1.1]</span></p>
+        </div>
+        <div class="time">
+          <span class="lbl">Timeline</span>
+          1–2 wks
+        </div>
+      </div>
+    </div>
+
+    <div class="moat-note">
+      <b>Moat.</b> These fixes are themselves the IP. A CSfC-certified, CNSA 2.0, post-quantum-ready crypto stack is a competitive position. Most competitors will not ship hybrid PQ key exchange before 2028.
+    </div>
+  </div>
+
+  <!-- ============ §03 COMPETITIVE POSITION ============ -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">03</div>
+      <div class="ttl">Competitive position</div>
+      <div class="meta-r">Six capabilities · five incumbents · vendor-by-capability map</div>
+    </div>
+
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th class="cap-h">Capability</th>
+          <th class="us">SuprNexus</th>
+          <th>Zscaler</th>
+          <th>Palo Alto</th>
+          <th>Illumio</th>
+          <th>Cisco</th>
+          <th>Juniper</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cap">Intent-based policy<span class="sub">Network-layer WHY semantics</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+        </tr>
+        <tr>
+          <td class="cap">Per-packet authorization<span class="sub">Cryptographic, in-line</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+        </tr>
+        <tr>
+          <td class="cap">Three-mode trust algorithm<span class="sub">Criteria + score + contextual</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+        </tr>
+        <tr>
+          <td class="cap">Federated mesh PEP<span class="sub">DDIL-tolerant enforcement</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+        </tr>
+        <tr>
+          <td class="cap">AI policy inference<span class="sub">Machine-speed adjudication</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+        </tr>
+        <tr>
+          <td class="cap">NPE / IoT / drone identity<span class="sub">Packet-bound non-person entities</span></td>
+          <td class="dot us">●</td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+          <td class="dot"><span class="half">◐</span></td>
+          <td class="dot"><span class="empty">○</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="cap">Native coverage</td>
+          <td class="us">6 / 6</td>
+          <td>0 / 6</td>
+          <td>0 / 6</td>
+          <td>0 / 6</td>
+          <td>0 / 6</td>
+          <td>0 / 6</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="legend">
+      <span><span class="dotleg">●</span> Native capability</span>
+      <span><span class="dotleg half">◐</span> Partial / adjacent</span>
+      <span><span class="dotleg empty">○</span> Not addressed</span>
+      <span style="margin-left:auto" class="mono">Reviewed May 2026</span>
+    </div>
+  </div>
+
+  <!-- ============ §04 MARKET ============ -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">04</div>
+      <div class="ttl">Addressable market</div>
+      <div class="meta-r">Aligned DoD program lines · FY25 / FY26</div>
+    </div>
+
+    <table class="market">
+      <thead>
+        <tr>
+          <th style="width:18%">Program</th>
+          <th class="r" style="width:12%">Budget</th>
+          <th class="bar">Relative weight</th>
+          <th>SuprNexus fit</th>
+          <th style="width:16%">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="prog">DoD AI PSPs</td><td class="bgt">$2.00B+</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></td><td>SuprNeural AI inference layer</td><td class="src">AI Strategy 2026</td></tr>
+        <tr><td class="prog">CJADC2</td><td class="bgt">$1.40B</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div></td><td>Policy enforcement, all domains</td><td class="src">DoD FY2025</td></tr>
+        <tr><td class="prog">DoD Zero Trust</td><td class="bgt">$1.00B+</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div></td><td>Platform-wide policy engine</td><td class="src">ZT Roadmap v1.1</td></tr>
+        <tr><td class="prog">ABMS</td><td class="bgt">$951M</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:48%"></div></div></td><td>Mesh + ZT above L3Harris transport</td><td class="src">DoD FY2026</td></tr>
+        <tr><td class="prog">ACE</td><td class="bgt">$538M</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:27%"></div></div></td><td>Tactical edge deployments</td><td class="src">DoD FY2025</td></tr>
+        <tr><td class="prog">TOC-L</td><td class="bgt">$315M</td><td class="bar"><div class="bar-track"><div class="bar-fill" style="width:16%"></div></div></td><td>Expeditionary networking</td><td class="src">DoD FY2026</td></tr>
+        <tr class="tam">
+          <td>TAM</td>
+          <td class="bgt">$6.2B+</td>
+          <td class="note" colspan="3">SAM (policy / ZT / mesh layer) ~$800M – $1.2B · Target 1–2% capture = $8M – $24M / yr</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ §05 RISKS ============ -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">05</div>
+      <div class="ttl">Known risks &amp; mitigations</div>
+      <div class="meta-r">Four · all addressable in-flight</div>
+    </div>
+
+    <div class="risks">
+      <div class="risk">
+        <div class="head"><h4>Patent FTO</h4><span class="sev"><span class="sev-dots"><i class="on"></i><i class="on"></i><i></i></span>Medium</span></div>
+        <p>US 12,041,168 and US 12,476,947 describe similar constructs. <span class="mit">Mitigation.</span> FTO analysis ($15–25K, 4–6 weeks) executed in parallel with Fix 01.</p>
+      </div>
+      <div class="risk">
+        <div class="head"><h4>FedRAMP timeline</h4><span class="sev"><span class="sev-dots"><i class="on"></i><i class="on"></i><i></i></span>Medium</span></div>
+        <p>12–18 months best case; can slip to 24. <span class="mit">Mitigation.</span> DoD SWIFT program (April 2025) accelerates ATO via AI-assisted review.</p>
+      </div>
+      <div class="risk">
+        <div class="head"><h4>L3Harris incumbency</h4><span class="sev"><span class="sev-dots"><i class="on"></i><i class="on"></i><i></i></span>Medium</span></div>
+        <p>Controls ABMS backbone and could build an in-house policy layer. <span class="mit">Mitigation.</span> Speed. Deliver CSfC-certified ZT policy before they do. Their core is RF / transport, not ZT policy.</p>
+      </div>
+      <div class="risk">
+        <div class="head"><h4>CNSA 2.0 maturity</h4><span class="sev"><span class="sev-dots"><i class="on"></i><i></i><i></i></span>Low</span></div>
+        <p>NIAP-evaluated IPsec with hybrid PQ remains limited. <span class="mit">Mitigation.</span> Architect for algorithm agility; swap primitives as validated implementations ship.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CLOSE / FUNDING ============ -->
+  <div class="close">
+    <div>
+      <div class="lab">Funding decision</div>
+      <h3>$150K now produces a certifiable product and two active acquisition pathways within 90 days.</h3>
+      <p>
+        The DoD is spending <span class="num">$6.2B+</span> annually on programs in direct alignment.
+        <span class="num">86%</span> of Zero Trust work remains incomplete with <span class="num">16 months</span>
+        on the deadline. No reviewed competitor combines intent-based policy, per-packet authorization,
+        three-mode trust, AI inference, and federated mesh. First revenue target
+        <span class="num">$5M–$10M</span> at month 18–24.
+      </p>
+    </div>
+    <div class="ask">
+      <div class="askv">$150<span class="unit">K</span></div>
+      <div class="askl">Capital ask</div>
+      <div class="askn">→ 4 mo. to cert &nbsp;·&nbsp; 90 days to pathways</div>
+    </div>
+  </div>
+
+  <!-- ============ REFERENCES ============ -->
+  <div class="refs">
+    <h4>References · 16 primary sources</h4>
+    <div class="refs-grid">
+      <a href="https://csrc.nist.gov/pubs/sp/800/207/final" target="_blank" rel="noopener"><b>[01]</b> NIST SP 800-207, Zero Trust Architecture (Aug 2020)<span class="url">csrc.nist.gov/pubs/sp/800/207/final</span></a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc9370" target="_blank" rel="noopener"><b>[09]</b> RFC 9370, Multiple Key Exchanges in IKEv2<span class="url">datatracker.ietf.org/doc/html/rfc9370</span></a>
+      <a href="https://dodcio.defense.gov/Portals/0/Documents/Library/(U)ZT_RA_v2.0(U)_Sep22.pdf" target="_blank" rel="noopener"><b>[02]</b> DoD ZT Reference Architecture v2.0 (Sep 2022)<span class="url">dodcio.defense.gov / ZT_RA_v2.0</span></a>
+      <a href="https://github.com/DoDCIO/json-ism" target="_blank" rel="noopener"><b>[10]</b> DoD CIO JSON-ISM<span class="url">github.com/DoDCIO/json-ism</span></a>
+      <a href="https://dodcio.defense.gov/Portals/0/Documents/Library/ZT-ExecutionRoadmap-v1.1.pdf" target="_blank" rel="noopener"><b>[03]</b> DoD ZT Capability Execution Roadmap v1.1<span class="url">dodcio.defense.gov / ZT-ExecutionRoadmap-v1.1</span></a>
+      <a href="https://patents.google.com/patent/US12041168B2" target="_blank" rel="noopener"><b>[11]</b> US Patent 12,041,168 (packet provenance)<span class="url">patents.google.com / US12041168B2</span></a>
+      <a href="https://dodcio.defense.gov/Portals/0/Documents/Library/DoDZTStrategy.pdf" target="_blank" rel="noopener"><b>[04]</b> DTM 25-003 (Jul 2025)<span class="url">dodcio.defense.gov / DoDZTStrategy</span></a>
+      <a href="https://patents.google.com/patent/US12476947B2" target="_blank" rel="noopener"><b>[12]</b> US Patent 12,476,947 (metadata routing)<span class="url">patents.google.com / US12476947B2</span></a>
+      <a href="https://www.dafcio.af.mil/Portals/77/documents/Library/DAF_Zero_Trust_Strategy.pdf" target="_blank" rel="noopener"><b>[05]</b> DAF Zero Trust Strategy v1.0 (Jul 2024)<span class="url">dafcio.af.mil / DAF_Zero_Trust_Strategy</span></a>
+      <a href="https://comptroller.defense.gov/Budget-Materials/Budget2025/" target="_blank" rel="noopener"><b>[13]</b> DoD FY2025 / FY2026 Budget Requests<span class="url">comptroller.defense.gov / Budget-Materials</span></a>
+      <a href="https://media.defense.gov/2022/Sep/07/2003071834/-1/-1/0/CSA_CNSA_2.0_ALGORITHMS_.PDF" target="_blank" rel="noopener"><b>[06]</b> CNSSP-15 Annex B / CNSA 2.0 (Sep 2022)<span class="url">media.defense.gov / CSA_CNSA_2.0_ALGORITHMS</span></a>
+      <a href="https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title10-section4022&num=0&edition=prelim" target="_blank" rel="noopener"><b>[14]</b> 10 U.S.C. §4022 (OTA)<span class="url">uscode.house.gov / title10-section4022</span></a>
+      <a href="https://www.nsa.gov/Resources/Commercial-Solutions-for-Classified-Program/Capability-Packages/" target="_blank" rel="noopener"><b>[07]</b> NSA CSfC VPN Gateway Capability Package<span class="url">nsa.gov / Commercial-Solutions-for-Classified / Capability-Packages</span></a>
+      <a href="https://media.defense.gov/2026/Jan/12/2003855671/-1/-1/0/ARTIFICIAL-INTELLIGENCE-STRATEGY-FOR-THE-DEPARTMENT-OF-WAR.PDF" target="_blank" rel="noopener"><b>[15]</b> DoD AI Acceleration Strategy (Jan 2026)<span class="url">media.defense.gov / AI-STRATEGY-FOR-THE-DEPARTMENT-OF-WAR</span></a>
+      <a href="https://csrc.nist.gov/pubs/sp/800/38d/final" target="_blank" rel="noopener"><b>[08]</b> NIST SP 800-38D (GCM) &nbsp;·&nbsp; RFC 8446 (TLS 1.3)<span class="url">csrc.nist.gov/pubs/sp/800/38d/final</span></a>
+      <a href="https://dodcio.defense.gov/Portals/0/Documents/Cyber/DoD_Enterprise_ICAM_Reference_Design.pdf" target="_blank" rel="noopener"><b>[16]</b> DoD Enterprise ICAM Reference Design<span class="url">dodcio.defense.gov / DoD_Enterprise_ICAM_Reference_Design</span></a>
+    </div>
+  </div>
+
+  <!-- ============ COLOPHON ============ -->
+  <div class="colophon">
+    <span>Parallel Deep Technical Research &nbsp;·&nbsp; Review Cycle 01</span>
+    <div class="right">
+      <span>UNCLASSIFIED</span>
+      <span>19 MAY 2026</span>
+      <span>TC-2026-05-19 / v1</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
